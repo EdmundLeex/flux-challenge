@@ -5,7 +5,7 @@ import { expect } from 'chai';
 const { renderIntoDocument, scryRenderedDOMComponentsWithTag } = React.addons.TestUtils;
 
 describe('Obiwan', () => {
-  it('renders an <h1> tag', () => {
+  it('renders an <h1> tag with obiwan\'s current planet', () => {
     const component = renderIntoDocument(
       <Obiwan planet={'Apatros'} />
     );
