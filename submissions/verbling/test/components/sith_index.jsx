@@ -17,7 +17,7 @@ describe('SithIndex', () => {
       master: null,
       apprentice: 4629,
     });
-    let sith2 = Map({
+    const sith2 = Map({
       id: 4629,
       name: 'Ajunta Pall',
       homeworld: Map({
