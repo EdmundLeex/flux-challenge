@@ -10,11 +10,9 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, 'dist'),
+    publicPath: '/',
     filename: 'index.js',
   },
-  plugins: [
-    new webpack.NoErrorsPlugin(),
-  ],
   module: {
     loaders: [{
       test: /\.jsx?$/,
