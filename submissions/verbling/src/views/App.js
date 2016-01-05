@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Map } from 'immutable';
-import Obiwan from './obiwan';
+import { ObiwanContainer } from './obiwan';
 import SithList from './sith_list';
 
 let xendor = Map({
@@ -42,7 +42,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Obiwan planet={"Apatros"} />
+        <ObiwanContainer />
         <SithList siths={siths}/>
       </div>
     );

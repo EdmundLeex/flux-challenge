@@ -1,5 +1,5 @@
 import React from 'react/addons';
-import Obiwan from '../../src/views/obiwan';
+import { Obiwan } from '../../src/views/obiwan';
 import { expect } from 'chai';
 
 const { renderIntoDocument, scryRenderedDOMComponentsWithTag } = React.addons.TestUtils;
