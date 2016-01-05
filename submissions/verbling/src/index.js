@@ -9,12 +9,13 @@ import App from './views/App';
 const SOCKET_URL = 'ws://localhost:4000';
 const socket = new WebSocket(SOCKET_URL);
 
+const store = createStore(reducer);
+
 socket.onmessage = (msg) => {
   let planet = JSON.parse(msg.data).name;
   store.dispatch(newPlanet(planet));
 };
 
-const store = createStore(reducer);
 
 ReactDOM.render(
   <Provider store={store}>
