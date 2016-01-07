@@ -4,17 +4,19 @@ import SithItem from './sith_item';
 
 export default React.createClass({
   mixins: [PureRenderMixin],
-  getSiths: function () {
-    return this.props.siths;
+  componentDidMount: function () {
+    this.props.fetchDarkJedi(3616);
   },
   render: function () {
+    let listSize = this.props.listSize;
+    let jedis = this.props.darkJedis;
+
     return (
       <ul className="css-slots">
-        {this.getSiths().map(sith => {
+        {jedis.map(jedi => {
           return (
-            <SithItem key={sith.get('id')} sith={sith} />
-          );
-        })}
+            <SithItem key={jedi.get('id')} jedi={jedi} />
+        )})}
       </ul>
     );
   }
