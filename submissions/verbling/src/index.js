@@ -19,18 +19,18 @@ socket.onmessage = (msg) => {
   store.dispatch(newPlanet(planet));
 };
 
-var actors = [populateJedisActor]
+// var actors = []
 
-var acting = false
-store.subscribe(function() {
-  if (!acting) {
-    acting = true
-    actors.forEach(actor => {
-      actor(store.getState(), store.dispatch);
-    })
-    acting = false
-  }
-});
+// var acting = false
+// store.subscribe(function() {
+//   if (!acting) {
+//     acting = true
+//     actors.forEach(actor => {
+//       actor(store.getState(), store.dispatch);
+//     })
+//     acting = false
+//   }
+// });
 
 ReactDOM.render(
   <Provider store={store}>

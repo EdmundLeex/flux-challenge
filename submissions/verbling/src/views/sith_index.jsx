@@ -5,7 +5,7 @@ import SithItem from './sith_item';
 export default React.createClass({
   mixins: [PureRenderMixin],
   componentDidMount: function () {
-    this.props.fetchDarkJedi(3616);
+    this.props.populateJedis();
   },
   render: function () {
     let listSize = this.props.listSize;
