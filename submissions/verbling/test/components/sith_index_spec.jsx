@@ -27,8 +27,10 @@ describe('SithIndex', () => {
       master: 5105,
       apprentice: 4601,
     });
+    const fetchDarkJedi = (id) => {};
     const component = renderIntoDocument(
-      <SithIndex siths={List([sith1, sith2])} />
+      <SithIndex darkJedis={List([sith1, sith2])}
+                 fetchDarkJedi={fetchDarkJedi} />
     );
     const sithIndex = scryRenderedDOMComponentsWithTag(component, 'ul')[0];
 

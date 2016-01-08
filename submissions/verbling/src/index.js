@@ -32,8 +32,6 @@ store.subscribe(function() {
   }
 });
 
-// store.dispatch(setState());
-
 ReactDOM.render(
   <Provider store={store}>
     <App />

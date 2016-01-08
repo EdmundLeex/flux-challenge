@@ -1,10 +1,6 @@
 import { List, Map } from 'immutable';
 import * as actions from './action_creators';
 
-function setState(state, newState) {
-  return state.merge(newState);
-}
-
 function updatePlanet(state, planet) {
   return state.set('planet', planet);
 }

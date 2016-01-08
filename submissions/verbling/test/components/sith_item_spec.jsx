@@ -7,7 +7,7 @@ const { renderIntoDocument, scryRenderedDOMComponentsWithTag } = React.addons.Te
 
 describe('SithItem', () => {
   it('renders an entry of sith', () => {
-    const sith = Map({
+    const jedi = Map({
       id: 5105,
       name: 'Xendor',
       homeworld: Map({
@@ -18,11 +18,11 @@ describe('SithItem', () => {
       apprentice: 4629,
     });
     const component = renderIntoDocument(
-      <SithItem key={sith.get('id')} sith={sith} />
+      <SithItem key={jedi.get('id')} jedi={jedi} />
     );
-    const sithItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
+    const jediItem = scryRenderedDOMComponentsWithTag(component, 'li')[0];
 
-    expect(sithItem.textContent).to.contain('Xendor');
-    expect(sithItem.textContent).to.contain('Coruscant');
+    expect(jediItem.textContent).to.contain('Xendor');
+    expect(jediItem.textContent).to.contain('Coruscant');
   });
 });
