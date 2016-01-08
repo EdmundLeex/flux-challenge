@@ -9,6 +9,18 @@ function receivedJedi(id, jedi) {
   }
 }
 
+export const NEW_PLANET = 'NEW_PLANET';
+export function newPlanet(planet) {
+  return {
+    meta: { remote: true },
+    type: NEW_PLANET,
+    planet
+  };
+}
+
+export const SCROLL_UP = 'SCROLL_UP';
+
+
 const DEFAULT_URL = 'http://localhost:3000';
 export function fetchDarkJedi(id, url = DEFAULT_URL) {
   return function(dispatch) {
@@ -20,18 +32,4 @@ export function fetchDarkJedi(id, url = DEFAULT_URL) {
   }
 }
 
-export function setState(state) {
-  return {
-    meta: { remote: true },
-    type: 'SET_STATE',
-    state
-  }
-}
 
-export function newPlanet(planet) {
-  return {
-    meta: { remote: true },
-    type: 'NEW_PLANET',
-    planet
-  };
-}

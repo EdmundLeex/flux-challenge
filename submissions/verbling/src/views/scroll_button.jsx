@@ -8,6 +8,11 @@ export default React.createClass({
   },
   scroll: function () {
     let dir = this.props.dir;
+    // if (dir === 'up') {
+    //   this.props.scrollUp();
+    // } else{
+    //   this.props.scrollDown();
+    // }
     console.log(dir);
   },
   render: function () {

@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import * as actions from './action_creators';
+import * as action_creators from './action_creators';
 
 function updatePlanet(state, planet) {
   return state.set('planet', planet);
@@ -32,11 +32,9 @@ const DEFAULT_STATE = Map({
 
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
-  case actions.RECEIVED_JEDI:
+  case action_creators.RECEIVED_JEDI:
     return receivedJedi(state, Map(action.jedi));
-  case 'SET_STATE':
-    return setState(state, action.state);
-  case 'NEW_PLANET':
+  case action_creators.NEW_PLANET:
     return updatePlanet(state, action.planet);
   }
   return state;
