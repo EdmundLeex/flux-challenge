@@ -6,7 +6,8 @@ export default React.createClass({
   render: function () {
     let jedi = this.props.jedi;
     let name = jedi.get('name') || "";
-    let home = `Homeworld: ${jedi.getIn(['homeworld', 'name']) || ""}`
+    let home = jedi.getIn(['homeworld', 'name']) || "";
+    if (home) home = `Homeworld: ${home}`;
     return (
       <li className="css-slot">
         <h3>{name}</h3>

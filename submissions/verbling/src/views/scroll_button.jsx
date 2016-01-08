@@ -8,10 +8,12 @@ export default React.createClass({
   },
   scroll: function () {
     let dir = this.props.dir;
+    console.log(dir);
   },
   render: function () {
     return (
-      <button className={`css-button-${this.getDir()}`}>
+      <button className={`css-button-${this.getDir()}`}
+              onClick={this.scroll}>
       </button>
     );
   }
