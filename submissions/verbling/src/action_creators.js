@@ -26,7 +26,7 @@ export function fetchDarkJedi(id, idx, url = DEFAULT_URL) {
   return function(dispatch) {
     fetch(`${url}/dark-jedis/${id}`)
       .then(response => response.json())
-      .then(json => dispatch(receivedJedi(json)))
+      .then(json => dispatch(receivedJedi(json, idx)))
       .then(() => dispatch(populateJedis()))
       .catch(err => console.log(err));
   }
@@ -49,7 +49,7 @@ export function populateJedis() {
       let nextId = lastJedi.get('apprentice').id;
 
       if (lastJediIdx < state.get('listSize') - 1 && nextId !== null) {
-        dispatch(fetchDarkJedi(nextId), lastJediIdx + 1);
+        dispatch(fetchDarkJedi(nextId, lastJediIdx + 1));
       }
     } else {
 
