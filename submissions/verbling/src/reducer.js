@@ -5,12 +5,9 @@ function updatePlanet(state, planet) {
   return state.set('planet', planet);
 }
 
-function receivedJedi(state, jedi) {
+function receivedJedi(state, jedi, idx) {
   return state.update('darkJedis', jedis => {
-    return jedis.set(
-      jedis.findIndex(item => {
-        return item.get('name') === undefined;
-      }), jedi);
+    return jedis.set(idx, jedi);
   });
 }
 
@@ -33,7 +30,8 @@ const DEFAULT_STATE = Map({
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
   case action_creators.RECEIVED_JEDI:
-    return receivedJedi(state, Map(action.jedi));
+  console.log(action)
+    return receivedJedi(state, Map(action.jedi), action.idx);
   case action_creators.NEW_PLANET:
     return updatePlanet(state, action.planet);
   }
