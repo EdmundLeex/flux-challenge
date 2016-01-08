@@ -1,5 +1,5 @@
 import { List, Map } from 'immutable';
-import * as action_creators from './action_creators';
+import * as actionCreators from './action_creators';
 
 function updatePlanet(state, planet) {
   return state.set('planet', planet);
@@ -11,10 +11,24 @@ function receivedJedi(state, jedi, idx) {
   });
 }
 
+function scroll(state, dir) {
+  let listSize = state.get('listSize');
+  if (dir === 'up') {
+    return state.update('darkJedis', jedis => {
+      return jedis.splice(0, 2).push(Map({id: i += 1})).push(Map({id: i += 1}));
+    });
+  } else {
+    return state.update('darkJedis', jedis => {
+      return jedis.splice(listSize - 2, listSize - 1).unshift(Map({id: i += 1})).unshift(Map({id: i += 1}));
+    })
+  }
+}
+
 const DEFAULT_LIST_SIZE = 5;
+var i;
 const EMPTY_LIST = (() => {
   let arr = [];
-  for(let i = 0; i < DEFAULT_LIST_SIZE; i++) {
+  for(i = 0; i < DEFAULT_LIST_SIZE; i++) {
     arr.push(Map({
       id: i
     }))
@@ -29,10 +43,14 @@ const DEFAULT_STATE = Map({
 
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
-  case action_creators.RECEIVED_JEDI:
+  case actionCreators.RECEIVED_JEDI:
     return receivedJedi(state, Map(action.jedi), action.idx);
-  case action_creators.NEW_PLANET:
+  case actionCreators.NEW_PLANET:
     return updatePlanet(state, action.planet);
+  case actionCreators.SCROLL_UP:
+    return scroll(state, 'up');
+  case actionCreators.SCROLL_DOWN:
+    return scroll(state, 'down');
   }
   return state;
 }

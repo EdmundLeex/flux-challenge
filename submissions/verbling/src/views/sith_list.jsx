@@ -12,8 +12,8 @@ export const SithList = React.createClass({
       <section className="css-scrollable-list">
         <SithIndex {...this.props} />
         <div className="css-scroll-buttons">
-          <ScrollButton dir={"up"} />
-          <ScrollButton dir={"down"} />
+          <ScrollButton dir={"up"} {...this.props} />
+          <ScrollButton dir={"down"} {...this.props} />
         </div>
       </section>
     );

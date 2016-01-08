@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import reducer from './reducer';
 import { newPlanet } from './action_creators';
 import App from './views/App';
-import { populateJedisActor } from './actors';
+import { fillListActor } from './actors';
 
 const SOCKET_URL = 'ws://localhost:4000';
 const socket = new WebSocket(SOCKET_URL);
@@ -19,18 +19,18 @@ socket.onmessage = (msg) => {
   store.dispatch(newPlanet(planet));
 };
 
-// var actors = []
+var actors = [fillListActor]
 
-// var acting = false
-// store.subscribe(function() {
-//   if (!acting) {
-//     acting = true
-//     actors.forEach(actor => {
-//       actor(store.getState(), store.dispatch);
-//     })
-//     acting = false
-//   }
-// });
+var acting = false
+store.subscribe(function() {
+  if (!acting) {
+    acting = true
+    actors.forEach(actor => {
+      actor(store.getState(), store.dispatch);
+    })
+    acting = false
+  }
+});
 
 ReactDOM.render(
   <Provider store={store}>

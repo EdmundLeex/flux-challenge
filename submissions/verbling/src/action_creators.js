@@ -19,7 +19,18 @@ export function newPlanet(planet) {
 }
 
 export const SCROLL_UP = 'SCROLL_UP';
+export function scrollUp() {
+  return {
+    type: SCROLL_UP
+  }
+}
 
+export const SCROLL_DOWN = 'SCROLL_DOWN';
+export function scrollDown() {
+  return {
+    type: SCROLL_DOWN
+  }
+}
 
 const DEFAULT_URL = 'http://localhost:3000';
 export function fetchDarkJedi(id, idx, url = DEFAULT_URL) {
