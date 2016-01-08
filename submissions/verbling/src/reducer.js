@@ -15,11 +15,11 @@ function scroll(state, dir) {
   let listSize = state.get('listSize');
   if (dir === 'up') {
     return state.update('darkJedis', jedis => {
-      return jedis.splice(0, 2).push(Map({id: i += 1})).push(Map({id: i += 1}));
+      return jedis.splice(0, 2).push(Map({id: i += 1}), Map({id: i += 1}));
     });
   } else {
     return state.update('darkJedis', jedis => {
-      return jedis.splice(listSize - 2, listSize - 1).unshift(Map({id: i += 1})).unshift(Map({id: i += 1}));
+      return jedis.splice(listSize - 2, listSize - 1).unshift(Map({id: i += 1}), Map({id: i += 1}));
     })
   }
 }
