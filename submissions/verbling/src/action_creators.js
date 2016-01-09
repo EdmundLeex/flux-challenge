@@ -33,13 +33,24 @@ export function newPlanet(planet) {
   };
 }
 
+export function cancelRequests() {
+  return function () {
+    for(let key in requests) {
+      requests[key].cancel();
+      delete requests[key];
+    }
+  }
+}
+
 export function scrolling(dir) {
-  return function(dispatch) {
+  return function(dispatch, getState) {
     if (dir === 'up') {
       dispatch(scrollDown());
+      dispatch(cancelRequests());
       dispatch(populateJedis('up'));
     } else {
       dispatch(scrollUp());
+      dispatch(cancelRequests());
       dispatch(populateJedis('down'));
     }
   }
@@ -60,12 +71,15 @@ export function scrollDown() {
   };
 }
 
+const requests = {};
 const DEFAULT_URL = 'http://localhost:3000';
 export function fetchDarkJedi(id, dir, url = DEFAULT_URL) {
   return function(dispatch) {
-    request.get(`${url}/dark-jedis/${id}`)
+    requests[id] = request
+      .get(`${url}/dark-jedis/${id}`)
       .then((response) => {
         let receive = dispatch(receivedJedi(JSON.parse(response.text), dir));
+        delete requests[id];
         let populate = dispatch(populateJedis(dir));
         return [receive, populate];
       })
