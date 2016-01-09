@@ -1,4 +1,5 @@
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
+import request from 'superagent-bluebird-promise';
 
 export const FILL_JEDI_TO_LIST = 'FILL_JEDI_TO_LIST';
 export function fillJediToList(jedi, idx) {
@@ -62,10 +63,12 @@ export function scrollDown() {
 const DEFAULT_URL = 'http://localhost:3000';
 export function fetchDarkJedi(id, dir, url = DEFAULT_URL) {
   return function(dispatch) {
-    fetch(`${url}/dark-jedis/${id}`)
-      .then(response => response.json())
-      .then(json => dispatch(receivedJedi(json, dir)))
-      .then(() => dispatch(populateJedis(dir)))
+    request.get(`${url}/dark-jedis/${id}`)
+      .then((response) => {
+        let receive = dispatch(receivedJedi(JSON.parse(response.text), dir));
+        let populate = dispatch(populateJedis(dir));
+        return [receive, populate];
+      })
       .catch(err => console.log(err));
   }
 }
