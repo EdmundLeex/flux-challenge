@@ -1,4 +1,3 @@
-// import fetch from 'isomorphic-fetch';
 import request from 'superagent-bluebird-promise';
 
 export const FILL_JEDI_TO_LIST = 'FILL_JEDI_TO_LIST';

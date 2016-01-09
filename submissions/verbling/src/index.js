@@ -19,19 +19,6 @@ socket.onmessage = (msg) => {
   store.dispatch(newPlanet(planet));
 };
 
-// var actors = [fillListActor]
-
-// var acting = false
-// store.subscribe(function() {
-//   if (!acting) {
-//     acting = true
-//     actors.forEach(actor => {
-//       actor(store.getState(), store.dispatch);
-//     })
-//     acting = false
-//   }
-// });
-
 ReactDOM.render(
   <Provider store={store}>
     <App />
