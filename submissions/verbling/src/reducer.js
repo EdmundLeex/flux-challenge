@@ -43,7 +43,7 @@ const DEFAULT_STATE = Map({
 
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
-  case actionCreators.RECEIVED_JEDI:
+  case actionCreators.FILL_JEDI_TO_LIST:
     return receivedJedi(state, Map(action.jedi), action.idx);
   case actionCreators.NEW_PLANET:
     return updatePlanet(state, action.planet);

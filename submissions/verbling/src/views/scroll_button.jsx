@@ -9,9 +9,9 @@ export default React.createClass({
   scroll: function () {
     let dir = this.props.dir;
     if (dir === 'up') {
-      this.props.scrollUp();
-    } else{
-      this.props.scrollDown();
+      this.props.scrolling('up');
+    } else {
+      this.props.scrolling('down');
     }
     console.log(dir);
   },

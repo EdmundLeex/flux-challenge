@@ -27,11 +27,18 @@ import * as actionCreators from './action_creators';
 export function fillListActor(state, dispatch) {
   let jedis = state.get('darkJedis');
   let firstJedi = jedis.find(entry => entry.get('name') !== undefined);
-  let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
-  let endOfList = !(firstJedi.get('master') && lastJedi.get('apprentice'));
-  let numOfJedis = jedis.count(entry => entry.get('name') !== undefined);
+  if (firstJedi) {
+    let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
+    let masterId = firstJedi.get('master').id;
+    let apprenticeId = lastJedi.get('apprentice').id;
+    let moreToFetch = (masterId || apprenticeId);
+console.log(!masterId)
+console.log(!apprenticeId)
+    let numOfJedis = jedis.count(entry => entry.get('name') !== undefined);
 
-  if (!endOfList && numOfJedis < state.get('listSize')) {
-    dispatch(actionCreators.populateJedis());
+    if (moreToFetch && numOfJedis < state.get('listSize')) {
+      console.log('fetching')
+      dispatch(actionCreators.populateJedis());
+    }
   }
 }
