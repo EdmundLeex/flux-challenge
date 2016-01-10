@@ -171,5 +171,32 @@ describe('reducer', () => {
     expect(nextState).to.equal(fromJS({
       darkJedis: List.of(sith2)
     }));
-  })
+  });
+
+  it('unhighlights jedi', () => {
+    const sith1 = Map({
+      id: 5105,
+      name: 'Xendor',
+      homeworld: {
+        id: 58,
+        name: 'Coruscant',
+      },
+      master: null,
+      apprentice: 4629,
+      visiting: true
+    });
+    const sith2 = sith1.set('visiting', false);
+    const initialState = fromJS({
+      darkJedis: List.of(sith1)
+    });
+    const action = {
+      type: 'UNHIGHLIGHT_JEDI',
+      idx: 0
+    };
+    const nextState = reducer(initialState, action);
+
+    expect(nextState).to.equal(fromJS({
+      darkJedis: List.of(sith2)
+    }));
+  });
 })
