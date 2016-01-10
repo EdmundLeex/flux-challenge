@@ -23,7 +23,8 @@ export const SithList = React.createClass({
 function mapStateToProps(state) {
   return {
     listSize: state.get('listSize'),
-    darkJedis: state.get('darkJedis')
+    darkJedis: state.get('darkJedis'),
+    buttons: state.get('buttons')
   };
 }
 

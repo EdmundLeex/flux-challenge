@@ -38,17 +38,35 @@ export function unhighlightJedi() {
   }
 }
 
+export const DISABLE_BUTTON = 'DISABLE_BUTTON';
+export function disableButton(button) {
+  return {
+    type: DISABLE_BUTTON,
+    button
+  }
+}
+
+export const ENABLE_BUTTON = 'ENABLE_BUTTON';
+export function enableButton(button) {
+  return {
+    type: ENABLE_BUTTON,
+    button
+  }
+}
+
 export function alertObiwan(idx) {
   return function (dispatch) {
     dispatch(highlightJedi(idx));
-    // dispatch(disableButton());
+    dispatch(disableButton('up'));
+    dispatch(disableButton('down'));
   }
 }
 
 export function cancelAlert() {
   return function (dispatch) {
     dispatch(unhighlightJedi());
-    // dispatch(enableButton());
+    dispatch(enableButton('up'));
+    dispatch(enableButton('down'));
   }
 }
 

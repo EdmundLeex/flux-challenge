@@ -37,6 +37,18 @@ function unhighlightJedi(state) {
   })
 }
 
+function disableButton(state, button) {
+  return state.update('buttons', btns => {
+    return btns.set(button, false);
+  })
+}
+
+function enableButton(state, button) {
+  return state.update('buttons', btns => {
+    return btns.set(button, true);
+  })
+}
+
 const DEFAULT_LIST_SIZE = 5;
 var i;
 const EMPTY_LIST = (() => {
@@ -51,7 +63,11 @@ const EMPTY_LIST = (() => {
 const DEFAULT_STATE = Map({
   listSize: DEFAULT_LIST_SIZE,
   planet: '',
-  darkJedis: EMPTY_LIST
+  darkJedis: EMPTY_LIST,
+  buttons: Map({
+    up: true,
+    down: true
+  })
 });
 
 export default function(state = DEFAULT_STATE, action) {
@@ -68,6 +84,10 @@ export default function(state = DEFAULT_STATE, action) {
     return highlightJedi(state, action.idx);
   case actionCreators.UNHIGHLIGHT_JEDI:
     return unhighlightJedi(state);
+  case actionCreators.DISABLE_BUTTON:
+    return disableButton(state, action.button);
+  case actionCreators.ENABLE_BUTTON:
+    return enableButton(state, action.button);
   }
   return state;
 }
