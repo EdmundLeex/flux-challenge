@@ -8,7 +8,7 @@ export default React.createClass({
   },
   scroll: function () {
     let dir = this.props.dir;
-    let enabled = this.props.buttons.get(this.props.dir);
+    let enabled = this.props.buttonsState.get(this.props.dir);
 
     if (enabled) {
       if (dir === 'up') {
@@ -19,7 +19,7 @@ export default React.createClass({
     }
   },
   render: function () {
-    let enabled = this.props.buttons.get(this.props.dir);
+    let enabled = this.props.buttonsState.get(this.props.dir);
     let disabledClass = (enabled) ? "" : "css-button-disabled";
     return (
       <button className={`css-button-${this.getDir()} ${disabledClass}`}

@@ -8,10 +8,10 @@ const { renderIntoDocument, findRenderedDOMComponentWithClass } = React.addons.T
 describe('SithList', () => {
   it('renders a button with correct direction', () => {
     const upBtn = renderIntoDocument(
-      <ScrollButton dir={'up'} />
+      <ScrollButton dir={'up'} buttonsState={Map({up: true, down: true})} />
     );
     const downBtn = renderIntoDocument(
-      <ScrollButton dir={'down'} />
+      <ScrollButton dir={'down'} buttonsState={Map({up: true, down: true})} />
     );
     const upBtnComponent = findRenderedDOMComponentWithClass(upBtn, 'css-button-up');
     const downBtnComponent = findRenderedDOMComponentWithClass(downBtn, 'css-button-down');

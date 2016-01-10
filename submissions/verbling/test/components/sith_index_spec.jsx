@@ -10,27 +10,27 @@ describe('SithIndex', () => {
     const sith1 = Map({
       id: 5105,
       name: 'Xendor',
-      homeworld: Map({
+      homeworld: {
         id: 58,
         name: 'Coruscant',
-      }),
+      },
       master: null,
       apprentice: 4629,
     });
     const sith2 = Map({
       id: 4629,
       name: 'Ajunta Pall',
-      homeworld: Map({
+      homeworld: {
         id: 19,
         name: 'Alderaan',
-      }),
+      },
       master: 5105,
       apprentice: 4601,
     });
-    const fetchDarkJedi = (id) => {};
+    const populateJedis = (id) => {};
     const component = renderIntoDocument(
       <SithIndex darkJedis={List([sith1, sith2])}
-                 fetchDarkJedi={fetchDarkJedi} />
+                 populateJedis={populateJedis} />
     );
     const sithIndex = scryRenderedDOMComponentsWithTag(component, 'ul')[0];
 

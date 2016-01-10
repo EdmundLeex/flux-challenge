@@ -10,10 +10,10 @@ describe('SithItem', () => {
     const jedi = Map({
       id: 5105,
       name: 'Xendor',
-      homeworld: Map({
+      homeworld: {
         id: 58,
         name: 'Coruscant',
-      }),
+      },
       master: null,
       apprentice: 4629,
     });

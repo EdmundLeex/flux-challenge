@@ -38,13 +38,13 @@ function unhighlightJedi(state) {
 }
 
 function disableButton(state, button) {
-  return state.update('buttons', btns => {
+  return state.update('buttonsState', btns => {
     return btns.set(button, false);
   })
 }
 
 function enableButton(state, button) {
-  return state.update('buttons', btns => {
+  return state.update('buttonsState', btns => {
     return btns.set(button, true);
   })
 }
@@ -64,7 +64,7 @@ const DEFAULT_STATE = Map({
   listSize: DEFAULT_LIST_SIZE,
   planet: '',
   darkJedis: EMPTY_LIST,
-  buttons: Map({
+  buttonsState: Map({
     up: true,
     down: true
   })
