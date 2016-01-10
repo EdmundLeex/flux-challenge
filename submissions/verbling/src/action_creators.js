@@ -181,7 +181,7 @@ function populateDown(dispatch, getState, jedis, listSize) {
   let lastJediIdx = jedis.indexOf(lastJedi);
   let nextId = lastJedi.get('apprentice').id;
 
-  if (lastJediIdx < listSize && nextId !== null) {
+  if (lastJediIdx < listSize - 1 && nextId !== null) {
     fetchDarkJedi(nextId, 'down', dispatch, getState);
   } else if (nextId === null) {
     dispatch(disableButton('down'));
