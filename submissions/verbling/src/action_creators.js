@@ -115,29 +115,22 @@ export function cancelRequests() {
 export function scrolling(dir) {
   return function(dispatch, getState) {
     if (dir === 'up') {
-      dispatch(scrollDown());
+      dispatch(scroll('down'));
       dispatch(cancelRequests());
       dispatch(populateJedis('up'));
     } else {
-      dispatch(scrollUp());
+      dispatch(scroll('up'));
       dispatch(cancelRequests());
       dispatch(populateJedis('down'));
     }
   };
 }
 
-export const SCROLL_UP = 'SCROLL_UP';
-function scrollUp() {
-  console.log('scrollup')
+export const SCROLL = 'SCROLL';
+function scroll(dir) {
   return {
-    type: SCROLL_UP
-  };
-}
-
-export const SCROLL_DOWN = 'SCROLL_DOWN';
-export function scrollDown() {
-  return {
-    type: SCROLL_DOWN
+    type: SCROLL,
+    dir
   };
 }
 

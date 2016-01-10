@@ -76,10 +76,8 @@ export default function(state = DEFAULT_STATE, action) {
     return receivedJedi(state, Map(action.jedi), action.idx);
   case actionCreators.NEW_PLANET:
     return updatePlanet(state, action.planet);
-  case actionCreators.SCROLL_UP:
-    return scroll(state, 'up');
-  case actionCreators.SCROLL_DOWN:
-    return scroll(state, 'down');
+  case actionCreators.SCROLL:
+    return scroll(state, action.dir);
   case actionCreators.HIGHLIGHT_JEDI:
     return highlightJedi(state, action.idx);
   case actionCreators.UNHIGHLIGHT_JEDI:
