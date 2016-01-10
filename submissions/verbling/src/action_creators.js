@@ -81,13 +81,13 @@ export function arrivedNewPlanet(planet) {
 export function scrolling(dir) {
   return function(dispatch, getState) {
     if (dir === 'up') {
-      dispatch(enableButton('down'));
+      // dispatch(enableButton('down'));
       dispatch(scroll('down'));
       checkIfDisableButton(dispatch, getState);
       cancelRequests();
       dispatch(populateJedis());
     } else {
-      dispatch(enableButton('up'));
+      // dispatch(enableButton('up'));
       dispatch(scroll('up'));
       checkIfDisableButton(dispatch, getState);
       cancelRequests();
@@ -213,6 +213,9 @@ function checkIfDisableButton(dispatch, getState) {
   let jedis = getState().get('darkJedis');
   let numOfJedis = jedis.count(entry => entry.get('name') !== undefined);
   let firstJediIdx = jedis.findIndex(entry => entry.get('name') !== undefined);
+  let lastJediIdx = jedis.findLastIndex(entry => entry.get('name') !== undefined);
+  let firstJedi = jedis.get(firstJediIdx);
+  let lastJedi = jedis.get(lastJediIdx);
   let listSize = getState().get('listSize');
 
   if (numOfJedis <= 2) {
@@ -222,7 +225,15 @@ function checkIfDisableButton(dispatch, getState) {
       dispatch(disableButton('down'));
     }
   } else {
-    dispatch(enableButton('up'));
-    dispatch(enableButton('down'));
+    if (lastJedi.get('apprentice').id) {
+      dispatch(enableButton('down'));
+    } else {
+      dispatch(disableButton('down'));
+    }
+    if (firstJedi.get('master').id) {
+      dispatch(enableButton('up'));
+    } else {
+      disableButton('up');
+    }
   }
 }
