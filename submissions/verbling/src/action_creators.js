@@ -57,7 +57,6 @@ export function unfreezeUI() {
 export const NEW_PLANET = 'NEW_PLANET';
 export function newPlanet(planet) {
   return {
-    meta: { remote: true },
     type: NEW_PLANET,
     planet
   };
@@ -78,29 +77,11 @@ export function alertObiwan(idx) {
   }
 }
 
-export function checkJedi() {
-  return function (dispatch, getState) {
-    let jedis = getState().get('darkJedis');
-    let planet = getState().get('planet');
-    let homeworlds = jedis.map((jedi) => {
-      let homeworld = jedi.get('homeworld');
-      return (homeworld) ? homeworld.name : null;
-    })
-
-    let idx = homeworlds.indexOf(planet);
-    if (idx !== -1) {
-      dispatch(alertObiwan(idx));
-    } else {
-      cancelAlert(dispatch, getState);
-    }
-  }
-}
-
 export function arrivedNewPlanet(planet) {
   return function (dispatch, getState) {
     dispatch(newPlanet(planet));
     cancelAlert(dispatch, getState);
-    dispatch(checkJedi());
+    checkJedi(dispatch, getState);
   };
 }
 
@@ -185,7 +166,7 @@ function receivedJedi(jedi, dir, dispatch, getState) {
     idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
   }
   dispatch(fillJediToList(jedi, idx));
-  dispatch(checkJedi());
+  checkJedi(dispatch, getState);
 }
 
 function freeze(dispatch) {
@@ -208,4 +189,20 @@ function cancelRequests() {
 function cancelAlert(dispatch, getState) {
   dispatch(unhighlightJedi());
   if (getState().get('freezed')) unfreeze(dispatch);
+}
+
+function checkJedi(dispatch, getState) {
+  let jedis = getState().get('darkJedis');
+  let planet = getState().get('planet');
+  let homeworlds = jedis.map((jedi) => {
+    let homeworld = jedi.get('homeworld');
+    return (homeworld) ? homeworld.name : null;
+  })
+
+  let idx = homeworlds.indexOf(planet);
+  if (idx !== -1) {
+    dispatch(alertObiwan(idx));
+  } else {
+    cancelAlert(dispatch, getState);
+  }
 }
