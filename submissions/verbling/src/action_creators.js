@@ -54,17 +54,27 @@ export function unfreezeUI() {
   }
 }
 
+export const NEW_PLANET = 'NEW_PLANET';
+export function newPlanet(planet) {
+  return {
+    meta: { remote: true },
+    type: NEW_PLANET,
+    planet
+  };
+}
+
+export const SCROLL = 'SCROLL';
+function scroll(dir) {
+  return {
+    type: SCROLL,
+    dir
+  };
+}
+
 export function alertObiwan(idx) {
   return function (dispatch) {
     dispatch(highlightJedi(idx));
     freeze(dispatch);
-  }
-}
-
-export function cancelAlert() {
-  return function (dispatch, getState) {
-    dispatch(unhighlightJedi());
-    if (getState().get('freezed')) unfreeze(dispatch);
   }
 }
 
@@ -81,7 +91,7 @@ export function checkJedi() {
     if (idx !== -1) {
       dispatch(alertObiwan(idx));
     } else {
-      dispatch(cancelAlert());
+      cancelAlert(dispatch, getState);
     }
   }
 }
@@ -89,25 +99,9 @@ export function checkJedi() {
 export function arrivedNewPlanet(planet) {
   return function (dispatch, getState) {
     dispatch(newPlanet(planet));
-    dispatch(cancelAlert());
+    cancelAlert(dispatch, getState);
     dispatch(checkJedi());
   };
-}
-
-export const NEW_PLANET = 'NEW_PLANET';
-export function newPlanet(planet) {
-  return {
-    meta: { remote: true },
-    type: NEW_PLANET,
-    planet
-  };
-}
-
-function cancelRequests() {
-  for(let key in requests) {
-    requests[key].cancel();
-    delete requests[key];
-  }
 }
 
 export function scrolling(dir) {
@@ -123,14 +117,6 @@ export function scrolling(dir) {
       cancelRequests();
       dispatch(populateJedis());
     }
-  };
-}
-
-export const SCROLL = 'SCROLL';
-function scroll(dir) {
-  return {
-    type: SCROLL,
-    dir
   };
 }
 
@@ -210,4 +196,16 @@ function freeze(dispatch) {
 function unfreeze(dispatch) {
   dispatch(unfreezeUI());
   dispatch(populateJedis());
+}
+
+function cancelRequests() {
+  for(let key in requests) {
+    requests[key].cancel();
+    delete requests[key];
+  }
+}
+
+function cancelAlert(dispatch, getState) {
+  dispatch(unhighlightJedi());
+  if (getState().get('freezed')) unfreeze(dispatch);
 }
