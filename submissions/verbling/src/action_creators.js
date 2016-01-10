@@ -20,6 +20,7 @@ function receivedJedi(jedi, dir) {
       idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
     }
     dispatch(fillJediToList(jedi, idx));
+    dispatch(checkJedi());
   };
 }
 
@@ -70,9 +71,10 @@ export function cancelAlert() {
   }
 }
 
-export function checkJedi(planet) {
+export function checkJedi() {
   return function (dispatch, getState) {
     let jedis = getState().get('darkJedis');
+    let planet = getState().get('planet');
     let homeworlds = jedis.map((jedi) => {
       let homeworld = jedi.get('homeworld');
       return (homeworld) ? homeworld.name : null;
@@ -90,7 +92,7 @@ export function checkJedi(planet) {
 export function arrivedNewPlanet(planet) {
   return function (dispatch, getState) {
     dispatch(newPlanet(planet));
-    dispatch(checkJedi(planet));
+    dispatch(checkJedi());
   };
 }
 
