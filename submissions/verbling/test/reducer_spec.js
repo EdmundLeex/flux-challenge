@@ -120,4 +120,30 @@ describe('reducer', () => {
       darkJedis: List.of(empty1, empty2, sith1, sith2, sith3)
     }));
   });
+
+  it('receives jedi', () => {
+    const initialState = fromJS({
+      darkJedis: List()
+    });
+    const sith1 = Map({
+      id: 5105,
+      name: 'Xendor',
+      homeworld: {
+        id: 58,
+        name: 'Coruscant',
+      },
+      master: null,
+      apprentice: 4629,
+    });
+    const action = {
+      type: 'FILL_JEDI_TO_LIST',
+      jedi: sith1,
+      idx: 0
+    };
+    const nextState = reducer(initialState, action);
+
+    expect(nextState).to.equal(fromJS({
+      darkJedis: List.of(sith1)
+    }));
+  })
 })
