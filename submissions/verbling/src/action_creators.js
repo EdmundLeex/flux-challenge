@@ -20,7 +20,60 @@ function receivedJedi(jedi, dir) {
       idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
     }
     dispatch(fillJediToList(jedi, idx));
+  };
+}
+
+export const HIGHLIGHT_JEDI = 'HIGHLIGHT_JEDI';
+export function highlightJedi(idx) {
+  return {
+    type: HIGHLIGHT_JEDI,
+    idx
   }
+}
+
+export const UNHIGHLIGHT_JEDI = 'UNHIGHLIGHT_JEDI';
+export function unhighlightJedi() {
+  return {
+    type: UNHIGHLIGHT_JEDI
+  }
+}
+
+export function alertObiwan(idx) {
+  return function (dispatch) {
+    dispatch(highlightJedi(idx));
+    // dispatch(disableButton());
+  }
+}
+
+export function cancelAlert() {
+  return function (dispatch) {
+    dispatch(unhighlightJedi());
+    // dispatch(enableButton());
+  }
+}
+
+export function checkJedi(planet) {
+  return function (dispatch, getState) {
+    let jedis = getState().get('darkJedis');
+    let homeworlds = jedis.map((jedi) => {
+      let homeworld = jedi.get('homeworld');
+      return (homeworld) ? homeworld.name : null;
+    })
+
+    let idx = homeworlds.indexOf(planet);
+    if (idx !== -1) {
+      dispatch(alertObiwan(idx));
+    } else {
+      dispatch(cancelAlert());
+    }
+  }
+}
+
+export function arrivedNewPlanet(planet) {
+  return function (dispatch, getState) {
+    dispatch(newPlanet(planet));
+    dispatch(checkJedi(planet));
+  };
 }
 
 export const NEW_PLANET = 'NEW_PLANET';
@@ -38,7 +91,7 @@ export function cancelRequests() {
       requests[key].cancel();
       delete requests[key];
     }
-  }
+  };
 }
 
 export function scrolling(dir) {
@@ -52,7 +105,7 @@ export function scrolling(dir) {
       dispatch(cancelRequests());
       dispatch(populateJedis('down'));
     }
-  }
+  };
 }
 
 export const SCROLL_UP = 'SCROLL_UP';
@@ -83,7 +136,7 @@ export function fetchDarkJedi(id, dir, url = DEFAULT_URL) {
         return [receive, populate];
       })
       .catch(err => console.log(err));
-  }
+  };
 }
 
 const DEFAULT_JEDI_ID = 3616;
@@ -111,5 +164,5 @@ export function populateJedis(dir) {
     } else {
       dispatch(fetchDarkJedi(DEFAULT_JEDI_ID, 'down'));
     }
-  }
+  };
 }

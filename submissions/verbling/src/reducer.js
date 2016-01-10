@@ -24,6 +24,19 @@ function scroll(state, dir) {
   }
 }
 
+function highlightJedi(state, idx) {
+  return state.update('darkJedis', jedis => {
+    let jedi = jedis.get(idx);
+    return jedis.set(idx, jedi.set('visiting', true));
+  });
+}
+
+function unhighlightJedi(state) {
+  return state.update('darkJedis', jedis => {
+    return jedis.map(jedi => jedi.set('visiting', false));
+  })
+}
+
 const DEFAULT_LIST_SIZE = 5;
 var i;
 const EMPTY_LIST = (() => {
@@ -51,6 +64,10 @@ export default function(state = DEFAULT_STATE, action) {
     return scroll(state, 'up');
   case actionCreators.SCROLL_DOWN:
     return scroll(state, 'down');
+  case actionCreators.HIGHLIGHT_JEDI:
+    return highlightJedi(state, action.idx);
+  case actionCreators.UNHIGHLIGHT_JEDI:
+    return unhighlightJedi(state);
   }
   return state;
 }

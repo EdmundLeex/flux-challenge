@@ -13,7 +13,6 @@ export default React.createClass({
     } else {
       this.props.scrolling('down');
     }
-    console.log(dir);
   },
   render: function () {
     return (
