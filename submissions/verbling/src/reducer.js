@@ -95,9 +95,9 @@ export default function(state = DEFAULT_STATE, action) {
     return disableButton(state, action.button);
   case actionCreators.ENABLE_BUTTON:
     return enableButton(state, action.button);
-  case actionCreators.FREEZE:
+  case actionCreators.FREEZE_UI:
     return freeze(state);
-  case actionCreators.UNFREEZE:
+  case actionCreators.UNFREEZE_UI:
     return unfreeze(state);
   }
   return state;

@@ -40,31 +40,31 @@ export function enableButton(button) {
   }
 }
 
-export const FREEZE = 'FREEZE';
-export function freeze() {
+export const FREEZE_UI = 'FREEZE_UI';
+export function freezeUI() {
   return {
-    type: FREEZE
+    type: FREEZE_UI
   }
 }
 
-export const UNFREEZE = 'UNFREEZE';
-export function unfreeze() {
+export const UNFREEZE_UI = 'UNFREEZE_UI';
+export function unfreezeUI() {
   return {
-    type: UNFREEZE
+    type: UNFREEZE_UI
   }
 }
 
 export function alertObiwan(idx) {
   return function (dispatch) {
     dispatch(highlightJedi(idx));
-    dispatch(freeze());
+    freeze(dispatch);
   }
 }
 
 export function cancelAlert() {
   return function (dispatch) {
     dispatch(unhighlightJedi());
-    dispatch(unfreeze());
+    unfreeze(dispatch);
   }
 }
 
@@ -198,4 +198,13 @@ function receivedJedi(jedi, dir, dispatch, getState) {
   }
   dispatch(fillJediToList(jedi, idx));
   dispatch(checkJedi());
+}
+
+function freeze(dispatch) {
+  cancelRequests();
+  dispatch(freezeUI());
+}
+
+function unfreeze(dispatch) {
+  dispatch(unfreezeUI());
 }
