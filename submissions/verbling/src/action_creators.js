@@ -81,13 +81,11 @@ export function arrivedNewPlanet(planet) {
 export function scrolling(dir) {
   return function(dispatch, getState) {
     if (dir === 'up') {
-      // dispatch(enableButton('down'));
       dispatch(scroll('down'));
       checkIfDisableButton(dispatch, getState);
       cancelRequests();
       dispatch(populateJedis());
     } else {
-      // dispatch(enableButton('up'));
       dispatch(scroll('up'));
       checkIfDisableButton(dispatch, getState);
       cancelRequests();
@@ -188,6 +186,7 @@ function cancelAlert(dispatch, getState) {
   if (getState().get('freezed')) unfreeze(dispatch);
 }
 
+// Checki if Obiwan's current planet is showing up on the list
 function checkJedi(dispatch, getState) {
   let jedis = getState().get('darkJedis');
   let planet = getState().get('planet');
@@ -209,6 +208,7 @@ function alertObiwan(dispatch, idx) {
   freeze(dispatch);
 }
 
+// Check which button to disable or enable
 function checkIfDisableButton(dispatch, getState) {
   let jedis = getState().get('darkJedis');
   let numOfJedis = jedis.count(entry => entry.get('name') !== undefined);
