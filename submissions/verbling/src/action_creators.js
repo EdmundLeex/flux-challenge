@@ -83,11 +83,13 @@ export function scrolling(dir) {
     if (dir === 'up') {
       dispatch(enableButton('down'));
       dispatch(scroll('down'));
+      checkIfDisableButton(dispatch, getState);
       cancelRequests();
       dispatch(populateJedis());
     } else {
       dispatch(enableButton('up'));
       dispatch(scroll('up'));
+      checkIfDisableButton(dispatch, getState);
       cancelRequests();
       dispatch(populateJedis());
     }
@@ -160,9 +162,11 @@ function receivedJedi(jedi, dir, dispatch, getState) {
   }
   dispatch(fillJediToList(jedi, idx));
   checkJedi(dispatch, getState);
+  checkIfDisableButton(dispatch, getState);
 }
 
 function freeze(dispatch) {
+  console.log(requests);
   cancelRequests();
   dispatch(freezeUI());
 }
@@ -203,4 +207,24 @@ function checkJedi(dispatch, getState) {
 function alertObiwan(dispatch, idx) {
   dispatch(highlightJedi(idx));
   freeze(dispatch);
+}
+
+function checkIfDisableButton(dispatch, getState) {
+  let jedis = getState().get('darkJedis');
+  let numOfJedis = jedis.count(entry => entry.get('name') !== undefined);
+  let firstJediIdx = jedis.findIndex(entry => entry.get('name') !== undefined);
+  let listSize = getState().get('listSize');
+
+  if (numOfJedis <= 2) {
+    console.log('firstJediIdx', firstJediIdx);
+    console.log('listSize', listSize);
+    if (firstJediIdx >= listSize - 2) {
+      dispatch(disableButton('up'));
+    } else if (firstJediIdx === 0) {
+      dispatch(disableButton('down'));
+    }
+  } else {
+    dispatch(enableButton('up'));
+    dispatch(enableButton('down'));
+  }
 }
