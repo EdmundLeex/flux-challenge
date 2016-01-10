@@ -199,4 +199,46 @@ describe('reducer', () => {
       darkJedis: List.of(sith2)
     }));
   });
+
+  it('disables buttons', () => {
+    const initialState = fromJS({
+      buttonsState: Map({
+        up: true,
+        down: true
+      })
+    });
+    const action = {
+      type: 'DISABLE_BUTTON',
+      button: 'up'
+    };
+    const nextState = reducer(initialState, action);
+
+    expect(nextState).to.equal(fromJS({
+      buttonsState: Map({
+        up: false,
+        down: true
+      })
+    }));
+  });
+
+  it('enables buttons', () => {
+    const initialState = fromJS({
+      buttonsState: Map({
+        up: false,
+        down: true
+      })
+    });
+    const action = {
+      type: 'ENABLE_BUTTON',
+      button: 'up'
+    };
+    const nextState = reducer(initialState, action);
+
+    expect(nextState).to.equal(fromJS({
+      buttonsState: Map({
+        up: true,
+        down: true
+      })
+    }));
+  });
 })
