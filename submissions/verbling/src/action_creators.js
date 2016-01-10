@@ -175,26 +175,34 @@ export function populateJedis(dir) {
     let listSize = state.get('listSize');
 
     if (dir === 'up') {
-      let firstJediIdx = jedis.findIndex(entry => entry.get('name') !== undefined);
-      let firstJedi = jedis.get(firstJediIdx);
-      let nextId = firstJedi.get('master').id;
-      if (firstJediIdx > 0 && nextId !== null) {
-        dispatch(fetchDarkJedi(nextId, 'up'));
-      } else if (nextId === null) {
-        dispatch(disableButton('up'));
-      }
+      populateUp(dispatch, jedis);
     } else if (dir === 'down') {
-      let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
-      let lastJediIdx = jedis.indexOf(lastJedi);
-      let nextId = lastJedi.get('apprentice').id;
-
-      if (lastJediIdx < state.get('listSize') - 1 && nextId !== null) {
-        dispatch(fetchDarkJedi(nextId, 'down'));
-      } else if (nextId === null) {
-        dispatch(disableButton('down'));
-      }
+      populateDown(dispatch, jedis, listSize);
     } else {
       dispatch(fetchDarkJedi(DEFAULT_JEDI_ID, 'down'));
     }
   };
+}
+
+function populateUp(dispatch, jedis) {
+  let firstJediIdx = jedis.findIndex(entry => entry.get('name') !== undefined);
+  let firstJedi = jedis.get(firstJediIdx);
+  let nextId = firstJedi.get('master').id;
+  if (firstJediIdx > 0 && nextId !== null) {
+    dispatch(fetchDarkJedi(nextId, 'up'));
+  } else if (nextId === null) {
+    dispatch(disableButton('up'));
+  }
+}
+
+function populateDown(dispatch, jedis, listSize) {
+  let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
+  let lastJediIdx = jedis.indexOf(lastJedi);
+  let nextId = lastJedi.get('apprentice').id;
+
+  if (lastJediIdx < listSize && nextId !== null) {
+    dispatch(fetchDarkJedi(nextId, 'down'));
+  } else if (nextId === null) {
+    dispatch(disableButton('down'));
+  }
 }
