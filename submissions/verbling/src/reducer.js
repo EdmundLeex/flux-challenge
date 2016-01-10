@@ -5,7 +5,7 @@ function updatePlanet(state, planet) {
   return state.set('planet', planet);
 }
 
-function receivedJedi(state, jedi, idx) {
+function fillJediToList(state, jedi, idx) {
   return state.update('darkJedis', jedis => {
     return jedis.set(idx, jedi);
   });
@@ -73,7 +73,7 @@ const DEFAULT_STATE = Map({
 export default function(state = DEFAULT_STATE, action) {
   switch (action.type) {
   case actionCreators.FILL_JEDI_TO_LIST:
-    return receivedJedi(state, Map(action.jedi), action.idx);
+    return fillJediToList(state, Map(action.jedi), action.idx);
   case actionCreators.NEW_PLANET:
     return updatePlanet(state, action.planet);
   case actionCreators.SCROLL:
