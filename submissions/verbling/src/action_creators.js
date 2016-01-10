@@ -125,8 +125,7 @@ function fetchDarkJedi(id, dir, dispatch, getState, url = DEFAULT_URL) {
     .then((response) => {
       let receive = receivedJedi(JSON.parse(response.text), dir, dispatch, getState);
       delete requests[id];
-      let populate = dispatch(populateJedis());
-      return [receive, populate];
+      return receive;
     })
     .catch(err => console.log(err));
 }
@@ -160,13 +159,14 @@ function receivedJedi(jedi, dir, dispatch, getState) {
   } else {
     idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
   }
-  dispatch(fillJediToList(jedi, idx));
+  let filled = dispatch(fillJediToList(jedi, idx));
+  let populated = dispatch(populateJedis());
   checkJedi(dispatch, getState);
   checkIfDisableButton(dispatch, getState);
+  return [filled, populated];
 }
 
 function freeze(dispatch) {
-  console.log(requests);
   cancelRequests();
   dispatch(freezeUI());
 }
@@ -216,8 +216,6 @@ function checkIfDisableButton(dispatch, getState) {
   let listSize = getState().get('listSize');
 
   if (numOfJedis <= 2) {
-    console.log('firstJediIdx', firstJediIdx);
-    console.log('listSize', listSize);
     if (firstJediIdx >= listSize - 2) {
       dispatch(disableButton('up'));
     } else if (firstJediIdx === 0) {
