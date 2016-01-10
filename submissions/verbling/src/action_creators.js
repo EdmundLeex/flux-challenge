@@ -92,6 +92,7 @@ export function checkJedi() {
 export function arrivedNewPlanet(planet) {
   return function (dispatch, getState) {
     dispatch(newPlanet(planet));
+    dispatch(cancelAlert());
     dispatch(checkJedi());
   };
 }
