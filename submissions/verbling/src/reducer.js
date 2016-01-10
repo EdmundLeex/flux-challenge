@@ -49,6 +49,14 @@ function enableButton(state, button) {
   })
 }
 
+function freeze(state) {
+  return state.set('freezed', true);
+}
+
+function unfreeze(state) {
+  return state.set('freezed', false);
+}
+
 const DEFAULT_LIST_SIZE = 5;
 var i;
 const EMPTY_LIST = (() => {
@@ -67,7 +75,8 @@ const DEFAULT_STATE = Map({
   buttonsState: Map({
     up: true,
     down: true
-  })
+  }),
+  freezed: false
 });
 
 export default function(state = DEFAULT_STATE, action) {
@@ -86,6 +95,10 @@ export default function(state = DEFAULT_STATE, action) {
     return disableButton(state, action.button);
   case actionCreators.ENABLE_BUTTON:
     return enableButton(state, action.button);
+  case actionCreators.FREEZE:
+    return freeze(state);
+  case actionCreators.UNFREEZE:
+    return unfreeze(state);
   }
   return state;
 }

@@ -55,19 +55,31 @@ export function enableButton(button) {
   }
 }
 
+export const FREEZE = 'FREEZE';
+export function freeze() {
+  return {
+    type: FREEZE
+  }
+}
+
+export const UNFREEZE = 'UNFREEZE';
+export function unfreeze() {
+  return {
+    type: UNFREEZE
+  }
+}
+
 export function alertObiwan(idx) {
   return function (dispatch) {
     dispatch(highlightJedi(idx));
-    dispatch(disableButton('up'));
-    dispatch(disableButton('down'));
+    dispatch(freeze());
   }
 }
 
 export function cancelAlert() {
   return function (dispatch) {
     dispatch(unhighlightJedi());
-    dispatch(enableButton('up'));
-    dispatch(enableButton('down'));
+    dispatch(unfreeze());
   }
 }
 
@@ -118,10 +130,12 @@ export function cancelRequests() {
 export function scrolling(dir) {
   return function(dispatch, getState) {
     if (dir === 'up') {
+      dispatch(enableButton('down'));
       dispatch(scroll('down'));
       dispatch(cancelRequests());
       dispatch(populateJedis('up'));
     } else {
+      dispatch(enableButton('up'));
       dispatch(scroll('up'));
       dispatch(cancelRequests());
       dispatch(populateJedis('down'));

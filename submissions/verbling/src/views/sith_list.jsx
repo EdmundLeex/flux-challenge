@@ -24,7 +24,8 @@ function mapStateToProps(state) {
   return {
     listSize: state.get('listSize'),
     darkJedis: state.get('darkJedis'),
-    buttonsState: state.get('buttonsState')
+    buttonsState: state.get('buttonsState'),
+    freezed: state.get('freezed')
   };
 }
 
