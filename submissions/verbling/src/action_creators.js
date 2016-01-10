@@ -9,21 +9,6 @@ export function fillJediToList(jedi, idx) {
   }
 }
 
-export const RECEIVED_JEDI = 'RECEIVED_JEDI';
-function receivedJedi(jedi, dir) {
-  return function (dispatch, getState) {
-    let jedis = getState().get('darkJedis');
-    let idx = 0;
-    if (dir === 'down') {
-      idx = jedis.findLastIndex(entry => entry.get('name') !== undefined) + 1;
-    } else {
-      idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
-    }
-    dispatch(fillJediToList(jedi, idx));
-    dispatch(checkJedi());
-  };
-}
-
 export const HIGHLIGHT_JEDI = 'HIGHLIGHT_JEDI';
 export function highlightJedi(idx) {
   return {
@@ -118,13 +103,11 @@ export function newPlanet(planet) {
   };
 }
 
-export function cancelRequests() {
-  return function () {
-    for(let key in requests) {
-      requests[key].cancel();
-      delete requests[key];
-    }
-  };
+function cancelRequests() {
+  for(let key in requests) {
+    requests[key].cancel();
+    delete requests[key];
+  }
 }
 
 export function scrolling(dir) {
@@ -132,12 +115,12 @@ export function scrolling(dir) {
     if (dir === 'up') {
       dispatch(enableButton('down'));
       dispatch(scroll('down'));
-      dispatch(cancelRequests());
+      cancelRequests();
       dispatch(populateJedis('up'));
     } else {
       dispatch(enableButton('up'));
       dispatch(scroll('up'));
-      dispatch(cancelRequests());
+      cancelRequests();
       dispatch(populateJedis('down'));
     }
   };
@@ -153,18 +136,16 @@ function scroll(dir) {
 
 const requests = {};
 const DEFAULT_URL = 'http://localhost:3000';
-export function fetchDarkJedi(id, dir, url = DEFAULT_URL) {
-  return function(dispatch) {
-    requests[id] = request
-      .get(`${url}/dark-jedis/${id}`)
-      .then((response) => {
-        let receive = dispatch(receivedJedi(JSON.parse(response.text), dir));
-        delete requests[id];
-        let populate = dispatch(populateJedis(dir));
-        return [receive, populate];
-      })
-      .catch(err => console.log(err));
-  };
+export function fetchDarkJedi(id, dir, dispatch, getState, url = DEFAULT_URL) {
+  requests[id] = request
+    .get(`${url}/dark-jedis/${id}`)
+    .then((response) => {
+      let receive = receivedJedi(JSON.parse(response.text), dir, dispatch, getState);
+      delete requests[id];
+      let populate = dispatch(populateJedis(dir));
+      return [receive, populate];
+    })
+    .catch(err => console.log(err));
 }
 
 const DEFAULT_JEDI_ID = 3616;
@@ -175,34 +156,46 @@ export function populateJedis(dir) {
     let listSize = state.get('listSize');
 
     if (dir === 'up') {
-      populateUp(dispatch, jedis);
+      populateUp(dispatch, getState, jedis);
     } else if (dir === 'down') {
-      populateDown(dispatch, jedis, listSize);
+      populateDown(dispatch, getState, jedis, listSize);
     } else {
-      dispatch(fetchDarkJedi(DEFAULT_JEDI_ID, 'down'));
+      fetchDarkJedi(DEFAULT_JEDI_ID, 'down', dispatch, getState);
     }
   };
 }
 
-function populateUp(dispatch, jedis) {
+function populateUp(dispatch, getState, jedis) {
   let firstJediIdx = jedis.findIndex(entry => entry.get('name') !== undefined);
   let firstJedi = jedis.get(firstJediIdx);
   let nextId = firstJedi.get('master').id;
   if (firstJediIdx > 0 && nextId !== null) {
-    dispatch(fetchDarkJedi(nextId, 'up'));
+    fetchDarkJedi(nextId, 'up', dispatch, getState);
   } else if (nextId === null) {
     dispatch(disableButton('up'));
   }
 }
 
-function populateDown(dispatch, jedis, listSize) {
+function populateDown(dispatch, getState, jedis, listSize) {
   let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
   let lastJediIdx = jedis.indexOf(lastJedi);
   let nextId = lastJedi.get('apprentice').id;
 
   if (lastJediIdx < listSize && nextId !== null) {
-    dispatch(fetchDarkJedi(nextId, 'down'));
+    fetchDarkJedi(nextId, 'down', dispatch, getState);
   } else if (nextId === null) {
     dispatch(disableButton('down'));
   }
+}
+
+function receivedJedi(jedi, dir, dispatch, getState) {
+  let jedis = getState().get('darkJedis');
+  let idx = 0;
+  if (dir === 'down') {
+    idx = jedis.findLastIndex(entry => entry.get('name') !== undefined) + 1;
+  } else {
+    idx = jedis.findIndex(entry => entry.get('name') !== undefined) - 1;
+  }
+  dispatch(fillJediToList(jedi, idx));
+  dispatch(checkJedi());
 }
