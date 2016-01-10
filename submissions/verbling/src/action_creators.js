@@ -70,13 +70,6 @@ function scroll(dir) {
   };
 }
 
-export function alertObiwan(idx) {
-  return function (dispatch) {
-    dispatch(highlightJedi(idx));
-    freeze(dispatch);
-  }
-}
-
 export function arrivedNewPlanet(planet) {
   return function (dispatch, getState) {
     dispatch(newPlanet(planet));
@@ -101,20 +94,6 @@ export function scrolling(dir) {
   };
 }
 
-const requests = {};
-const DEFAULT_URL = 'http://localhost:3000';
-export function fetchDarkJedi(id, dir, dispatch, getState, url = DEFAULT_URL) {
-  requests[id] = request
-    .get(`${url}/dark-jedis/${id}`)
-    .then((response) => {
-      let receive = receivedJedi(JSON.parse(response.text), dir, dispatch, getState);
-      delete requests[id];
-      let populate = dispatch(populateJedis());
-      return [receive, populate];
-    })
-    .catch(err => console.log(err));
-}
-
 const DEFAULT_JEDI_ID = 3616;
 export function populateJedis() {
   return function(dispatch, getState) {
@@ -134,6 +113,20 @@ export function populateJedis() {
       }
     }
   }
+}
+
+const requests = {};
+const DEFAULT_URL = 'http://localhost:3000';
+function fetchDarkJedi(id, dir, dispatch, getState, url = DEFAULT_URL) {
+  requests[id] = request
+    .get(`${url}/dark-jedis/${id}`)
+    .then((response) => {
+      let receive = receivedJedi(JSON.parse(response.text), dir, dispatch, getState);
+      delete requests[id];
+      let populate = dispatch(populateJedis());
+      return [receive, populate];
+    })
+    .catch(err => console.log(err));
 }
 
 function populateUp(dispatch, getState, jedis, firstJediIdx) {
@@ -201,8 +194,13 @@ function checkJedi(dispatch, getState) {
 
   let idx = homeworlds.indexOf(planet);
   if (idx !== -1) {
-    dispatch(alertObiwan(idx));
+    alertObiwan(dispatch, idx);
   } else {
     cancelAlert(dispatch, getState);
   }
+}
+
+function alertObiwan(dispatch, idx) {
+  dispatch(highlightJedi(idx));
+  freeze(dispatch);
 }
