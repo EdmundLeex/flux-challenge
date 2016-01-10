@@ -170,6 +170,8 @@ export function populateJedis(dir) {
       let nextId = firstJedi.get('master').id;
       if (firstJediIdx > 0 && nextId !== null) {
         dispatch(fetchDarkJedi(nextId, 'up'));
+      } else if (nextId === null) {
+        dispatch(disableButton('up'));
       }
     } else if (dir === 'down') {
       let lastJedi = jedis.findLast(entry => entry.get('name') !== undefined);
@@ -178,6 +180,8 @@ export function populateJedis(dir) {
 
       if (lastJediIdx < state.get('listSize') - 1 && nextId !== null) {
         dispatch(fetchDarkJedi(nextId, 'down'));
+      } else if (nextId === null) {
+        dispatch(disableButton('down'));
       }
     } else {
       dispatch(fetchDarkJedi(DEFAULT_JEDI_ID, 'down'));
